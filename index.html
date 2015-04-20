@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Retroscope</title>
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0" />
+<link rel="stylesheet"
+	href="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+<script src="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+<style>
+body {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+#map {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+</style>
+</head>
+<body>
+	<div id="map"></div>
+
+	<script>
+		var StickyTileLayer = L.TileLayer.extend({
+			onAdd : function(map) {
+				L.TileLayer.prototype.onAdd.call(this, map);
+
+				var that = this;
+				var e = this.getContainer();
+
+				e.style.overflow = "hidden";
+				e.style.width = map.getSize().x + "px";
+				e.style.height = map.getSize().y + "px";
+
+				map.on("resize", function(event) {
+					e.style.width = map.getSize().x + "px";
+					e.style.height = map.getSize().y + "px";
+				});
+
+				map.on("move", function(event) {
+					var p = map.containerPointToLayerPoint([ 0, 0 ]);
+					e.style.left = p.x + "px";
+					e.style.top = p.y + "px";
+					var t = "translate3d(" + (-p.x) + "px," + (-p.y) + "px,0)";
+					for (var f = e.firstChild; f != null; f = f.nextSibling)
+						if (f.style)
+							f.style.transform = t;
+				});
+				map.on("zoomend", function(event) {
+					var zoom = map.getZoom();
+					if (zoom < that.options.minZoom
+							|| that.options.maxZoom < zoom)
+						e.style.display = "none";
+					else
+						e.style.display = "block";
+				});
+			}
+		});
+
+		var layer1 = L.tileLayer(
+				'http://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg', {
+					attribution : "GSI Ortho",
+					maxNativeZoom : 17,
+					maxZoom : 20
+				});
+
+		var layer2 = new StickyTileLayer(
+				'http://www.finds.jp/ws/tmc/1.0.0/Kanto_Rapid-900913-L/{z}/{x}/{y}.png',
+				{
+					attribution : "NIAES, NARO",
+					maxNativeZoom : 15,
+					maxZoom : 17
+				});
+
+		var map = L.map("map", {
+			zoom : 15,
+			center : [ 36.0847, 140.0999 ],
+			layers : [ layer1, layer2 ]
+		});
+
+		map.on("mousemove", function(event) {
+			var s = event.containerPoint;
+			var a = "circle(200px at " + s.x + "px " + s.y + "px)";
+			layer2.getContainer().style["-webkit-clip-path"] = a;
+		});
+	</script>
+</body>
+</html>
+
