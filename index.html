@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html>
 <head>
@@ -27,50 +28,48 @@ body {
 	<div id="map"></div>
 
 	<script>
-		var StickyTileLayer = L.TileLayer.extend({
+		var RoundTileLayer = L.TileLayer.extend({
 			onAdd : function(map) {
 				L.TileLayer.prototype.onAdd.call(this, map);
-
-				var that = this;
 				var e = this.getContainer();
+				var o = this.options;
+				var r = o.radius || 200;
 
 				e.style.overflow = "hidden";
-				e.style.width = map.getSize().x + "px";
-				e.style.height = map.getSize().y + "px";
+				e.style.top = "0";
+				e.style.left = "0";
+				e.style.width = (r * 2) + "px";
+				e.style.height = (r * 2) + "px";
+				e.style.borderRadius = r + "px";
+				e.style.transform = "translate3d(-1000px,-1000px,0)";
 
-				map.on("resize", function(event) {
-					e.style.width = map.getSize().x + "px";
-					e.style.height = map.getSize().y + "px";
-				});
-
-				map.on("move", function(event) {
-					var p = map.containerPointToLayerPoint([ 0, 0 ]);
-					e.style.left = p.x + "px";
-					e.style.top = p.y + "px";
-					var t = "translate3d(" + (-p.x) + "px," + (-p.y) + "px,0)";
-					for (var f = e.firstChild; f != null; f = f.nextSibling)
-						if (f.style)
-							f.style.transform = t;
-				});
 				map.on("zoomend", function(event) {
-					var zoom = map.getZoom();
-					if (zoom < that.options.minZoom
-							|| that.options.maxZoom < zoom)
-						e.style.display = "none";
-					else
-						e.style.display = "block";
+					var z = map.getZoom();
+					var f = (z < o.minZoom || o.maxZoom < z);
+					e.style.display = (f ? "none" : "block");
 				});
+			},
+			setCenter : function(p) {
+				var e = this.getContainer();
+				var r = this.options.radius || 200;
+				var x = p.x - r;
+				var y = p.y - r;
+				e.style.transform = "translate3d(" + x + "px," + y + "px,0)";
+				var t = "translate3d(" + (-x) + "px," + (-y) + "px,0)";
+				for (var f = e.firstChild; f != null; f = f.nextSibling)
+					if (f.style)
+						f.style.transform = t;
 			}
 		});
 
-		var layer1 = L.tileLayer(
+		var bg = L.tileLayer(
 				'http://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg', {
 					attribution : "GSI Ortho",
 					maxNativeZoom : 17,
 					maxZoom : 20
 				});
 
-		var layer2 = new StickyTileLayer(
+		var fg = new RoundTileLayer(
 				'http://www.finds.jp/ws/tmc/1.0.0/Kanto_Rapid-900913-L/{z}/{x}/{y}.png',
 				{
 					attribution : "NIAES, NARO",
@@ -78,18 +77,13 @@ body {
 					maxZoom : 17
 				});
 
-		var map = L.map("map", {
+		L.map("map", {
 			zoom : 15,
-			center : [ 36.0847, 140.0999 ],
-			layers : [ layer1, layer2 ]
-		});
-
-		map.on("mousemove", function(event) {
-			var s = event.containerPoint;
-			var a = "circle(200px at " + s.x + "px " + s.y + "px)";
-			layer2.getContainer().style["-webkit-clip-path"] = a;
+			center : [ 35.670685, 139.785233 ],
+			layers : [ bg, fg ]
+		}).on("mousemove", function(event) {
+			fg.setCenter(event.layerPoint);
 		});
 	</script>
 </body>
 </html>
-
