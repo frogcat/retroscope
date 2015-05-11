@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html>
 <head>
@@ -8,6 +7,7 @@
 <link rel="stylesheet"
 	href="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
 <script src="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+<script src="//cdn.rawgit.com/mlevans/leaflet-hash/master/leaflet-hash.js"></script>
 <style>
 body {
 	width: 100%;
@@ -77,13 +77,15 @@ body {
 					maxZoom : 17
 				});
 
-		L.map("map", {
+		var map = L.map("map", {
 			zoom : 15,
 			center : [ 35.670685, 139.785233 ],
 			layers : [ bg, fg ]
 		}).on("mousemove", function(event) {
 			fg.setCenter(event.layerPoint);
 		});
+		
+		var hash = new L.Hash(map);
 	</script>
 </body>
 </html>
