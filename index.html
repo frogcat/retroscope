@@ -7,7 +7,8 @@
 <link rel="stylesheet"
 	href="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
 <script src="//cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-<script src="//cdn.rawgit.com/mlevans/leaflet-hash/master/leaflet-hash.js"></script>
+<script
+	src="//cdn.rawgit.com/mlevans/leaflet-hash/master/leaflet-hash.js"></script>
 <style>
 body {
 	width: 100%;
@@ -22,70 +23,83 @@ body {
 	width: 100%;
 	height: 100%;
 }
+
+svg {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+}
 </style>
 </head>
 <body>
 	<div id="map"></div>
-
+	<svg xmlns="http://www.w3.org/2000/svg">
+	  <defs>
+    <radialGradient id="hole" gradientUnits="userSpaceOnUse" cx="50%"
+			cy="50%" r="300">
+        <stop offset="0%" stop-color="white" stop-opacity="1.0" />
+        <stop offset="75%" stop-color="white" stop-opacity="1.0" />
+        <stop offset="100%" stop-color="white" stop-opacity="0.0" />
+      </radialGradient>
+ 	<mask id="mask" maskUnits="userSpaceOnUse" x="0" y="0" width="100%"
+			height="100%">
+		<rect x="0" y="0" width="100%" height="100%" fill="url(#hole)" /></mask>
+		</defs>
+		<g mask="url(#mask)">
+		<g id="host"></g>
+	</svg>
 	<script>
-		var RoundTileLayer = L.TileLayer.extend({
-			onAdd : function(map) {
-				L.TileLayer.prototype.onAdd.call(this, map);
-				var e = this.getContainer();
-				var o = this.options;
-				var r = o.radius || 200;
+		var ns = {
+			svg : "http://www.w3.org/2000/svg",
+			xlink : "http://www.w3.org/1999/xlink",
+			ort : 'http://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg'
+		};
 
-				e.style.overflow = "hidden";
-				e.style.top = "0";
-				e.style.left = "0";
-				e.style.width = (r * 2) + "px";
-				e.style.height = (r * 2) + "px";
-				e.style.borderRadius = r + "px";
-				e.style.transform = "translate3d(-1000px,-1000px,0)";
+		var convert = function(src) {
+			var a = src.split("/");
+			return [ "http://www.finds.jp/ws/tmc/1.0.0/Kanto_Rapid-900913-L",
+					a[5], a[6], a[7].replace(".jpg", ".png") ].join("/");
+		};
 
-				map.on("zoomend", function(event) {
-					var z = map.getZoom();
-					var f = (z < o.minZoom || o.maxZoom < z);
-					e.style.display = (f ? "none" : "block");
-				});
-			},
-			setCenter : function(p) {
-				var e = this.getContainer();
-				var r = this.options.radius || 200;
-				var x = p.x - r;
-				var y = p.y - r;
-				e.style.transform = "translate3d(" + x + "px," + y + "px,0)";
-				var t = "translate3d(" + (-x) + "px," + (-y) + "px,0)";
-				for (var f = e.firstChild; f != null; f = f.nextSibling)
-					if (f.style)
-						f.style.transform = t;
-			}
-		});
-
-		var bg = L.tileLayer(
-				'http://cyberjapandata.gsi.go.jp/xyz/ort/{z}/{x}/{y}.jpg', {
-					attribution : "GSI Ortho",
-					maxNativeZoom : 17,
-					maxZoom : 20
-				});
-
-		var fg = new RoundTileLayer(
-				'http://www.finds.jp/ws/tmc/1.0.0/Kanto_Rapid-900913-L/{z}/{x}/{y}.png',
-				{
-					attribution : "NIAES, NARO",
-					maxNativeZoom : 15,
-					maxZoom : 17
-				});
+		var host = document.getElementById("host");
+		var hole = document.getElementById("hole");
 
 		var map = L.map("map", {
 			zoom : 15,
-			center : [ 35.670685, 139.785233 ],
-			layers : [ bg, fg ]
-		}).on("mousemove", function(event) {
-			fg.setCenter(event.layerPoint);
+			center : [ 35.670685, 139.785233 ]
+		}).on("move", function() {
+			var p = map.containerPointToLayerPoint([ 0, 0 ]);
+			var a = "translate(" + [ -p.x, -p.y ].join(",") + ")";
+			host.setAttribute("transform", a);
+		}).on("mousemove", function(e) {
+			var p = e.containerPoint;
+			hole.setAttribute("cx", p.x);
+			hole.setAttribute("cy", p.y);
 		});
-		
-		var hash = new L.Hash(map);
+
+		new L.Hash(map);
+
+		var tile = L.tileLayer(ns.ort, {
+			maxNativeZoom : 17,
+			maxZoom : 20,
+			attribution : "GSI Ortho"
+		}).on("tileload", function(e) {
+			var p = L.DomUtil.getPosition(e.tile);
+			var img = document.createElementNS(ns.svg, "image");
+			img.setAttributeNS(ns.xlink, "href", convert(e.url));
+			img.setAttribute("width", 256);
+			img.setAttribute("height", 256);
+			img.setAttribute("x", p.x);
+			img.setAttribute("y", p.y);
+			e.tile.img = img;
+			host.appendChild(img);
+		}).on("tileunload", function(e) {
+			if (e.tile && e.tile.img)
+				host.removeChild(e.tile.img);
+		}).addTo(map);
 	</script>
 </body>
 </html>
