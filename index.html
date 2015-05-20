@@ -68,12 +68,6 @@ svg {
 			attribution : '<a href="http://habs.dc.affrc.go.jp/">歴史的農業環境閲覧システム(NIAES)</a>'
 		});
 
-		if (location.search.match(/^\?kjmapw,([a-z_0-9]+\/[a-z_0-9]+)$/))
-			fg = L.tileLayer('http://ktgis.net/kjmapw/kjtilemap/' + RegExp.$1 + '/{z}/{x}/{y}.png', {
-				attribution : '<a href="http://ktgis.net/kjmapw/">今昔マップ on the web</a>',
-				tms : true
-			});
-
 		var e3 = document.getElementById("e3");
 		var e4 = document.getElementById("e4");
 		var e5 = document.getElementById("e5");
