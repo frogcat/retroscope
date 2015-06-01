@@ -15,3 +15,14 @@ http://frogcat.github.io/retroscope/
 http://frogcat.github.io/retroscope/mask.html
 
 前景の地図を境界領域をぼかしつつ円形クリップ。Webkit 専用バージョン。
+
+## For developers
+
+このレポジトリでの試行成果をとりまとめて Leaflet Plugin として公開しました。
+Retroscope を別の地図タイルで試してみたい方、Fork して拡張してみたいと思ってくださる方は、ぜひプラグインバージョンのご利用をご検討ください。
+
+http://frogcat.github.io/leaflet-tilelayer-mask/
+
+
+
+
