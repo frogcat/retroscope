@@ -32,7 +32,9 @@ body {
 		});
 
 		var fg = L.tileLayer.mask('http://www.finds.jp/ws/tmc/1.0.0/Kanto_Rapid-900913-L/{z}/{x}/{y}.png', {
-			attribution : '<a href="http://habs.dc.affrc.go.jp/">歴史的農業環境閲覧システム(NIAES)</a>'
+			attribution : '<a href="http://habs.dc.affrc.go.jp/">歴史的農業環境閲覧システム(NIAES)</a>',
+			maskWidth : (L.Browser.touch ? 256 : 512),
+			maskHeight : (L.Browser.touch ? 256 : 512)
 		});
 
 		var opt = L.extend({
@@ -47,7 +49,7 @@ body {
 
 		var map = L.map("map", opt);
 
-		map.on("mousemove", function(e) {
+		map.on(L.Browser.touch ? "click" : "mousemove", function(e) {
 			fg.setCenter(e.containerPoint.x, e.containerPoint.y);
 		});
 
