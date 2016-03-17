@@ -1,0 +1,78 @@
+{
+  "layers": [{
+    "type": "Layer",
+    "id": "Kanto_Rapid-900913-L",
+    "attribution": "<a href='http://habs.dc.affrc.go.jp/'>歴史的農業環境閲覧システム(NIAES)</a>",
+    "url": "http://www.finds.jp/ws/tmc/1.0.0/{id}/{z}/{x}/{y}.png",
+    "title": "1880",
+    "maxZoom": 19,
+    "minZoom": 8,
+    "maxNativeZoom": 17
+  }, {
+    "type": "Layer",
+    "id": "ort_USA10",
+    "attribution": "<a href='http://maps.gsi.go.jp/development/ichiran.html#ort_USA10'>空中写真1945～1950年(地理院タイル)</a>",
+    "url": "http://cyberjapandata.gsi.go.jp/xyz/{id}/{z}/{x}/{y}.png",
+    "title": "1945"
+  }, {
+    "type": "Layer",
+    "id": "ort_old10",
+    "attribution": "<a href='http://maps.gsi.go.jp/development/ichiran.html#ort_old10'>空中写真1961～1964年(地理院タイル)</a>",
+    "url": "http://cyberjapandata.gsi.go.jp/xyz/{id}/{z}/{x}/{y}.png",
+    "title": "1961"
+  }, {
+    "type": "Layer",
+    "id": "gazo1",
+    "attribution": "<a href='http://maps.gsi.go.jp/development/ichiran.html#gazo1'>国土画像情報 第一期1974～1978年撮影(地理院タイル)</a>",
+    "url": "http://cyberjapandata.gsi.go.jp/xyz/{id}/{z}/{x}/{y}.jpg",
+    "title": "1974"
+  }, {
+    "type": "Layer",
+    "id": "gazo2",
+    "attribution": "<a href='http://maps.gsi.go.jp/development/ichiran.html#gazo2'>国土画像情報 第二期1979～1983年(地理院タイル)</a>",
+    "url": "http://cyberjapandata.gsi.go.jp/xyz/{id}/{z}/{x}/{y}.jpg",
+    "title": "1979"
+  }, {
+    "type": "Layer",
+    "id": "gazo3",
+    "attribution": "<a href='http://maps.gsi.go.jp/development/ichiran.html#gazo3'>国土画像情報 第三期1984～1986年撮影(地理院タイル)</a>",
+    "url": "http://cyberjapandata.gsi.go.jp/xyz/{id}/{z}/{x}/{y}.jpg",
+    "title": "1984"
+  }, {
+    "type": "Layer",
+    "id": "gazo4",
+    "attribution": "<a href='http://maps.gsi.go.jp/development/ichiran.html#gazo4'>国土画像情報 第四期1988～1990年撮影(地理院タイル)</a>",
+    "url": "http://cyberjapandata.gsi.go.jp/xyz/{id}/{z}/{x}/{y}.jpg",
+    "title": "1988"
+  }, {
+    "type": "Layer",
+    "id": "airphoto",
+    "attribution": "<a href='http://maps.gsi.go.jp/development/ichiran.html#airphoto'>簡易空中写真 2004年～(地理院タイル)</a>",
+    "url": "http://cyberjapandata.gsi.go.jp/xyz/{id}/{z}/{x}/{y}.png",
+    "title": "2004"
+  }, {
+    "type": "Layer",
+    "id": "toho1",
+    "attribution": "<a href='http://maps.gsi.go.jp/development/ichiran.html#toho1'>東日本大震災被災地震災直後オルソ画像 2011年3月～2011年4月撮影(地理院タイル)</a>",
+    "url": "http://cyberjapandata.gsi.go.jp/xyz/{id}/{z}/{x}/{y}.jpg",
+    "title": "2011-03"
+  }, {
+    "type": "Layer",
+    "id": "toho2",
+    "attribution": "<a href='http://maps.gsi.go.jp/development/ichiran.html#toho2'>東日本大震災被災地震災直後オルソ画像 2011年5月～2012年4月撮影(地理院タイル)</a>",
+    "url": "http://cyberjapandata.gsi.go.jp/xyz/{id}/{z}/{x}/{y}.jpg",
+    "title": "2011-05"
+  }, {
+    "type": "Layer",
+    "id": "toho3",
+    "attribution": "<a href='http://maps.gsi.go.jp/development/ichiran.html#toho3'>東日本大震災被災地震災直後オルソ画像 2012年10月～2013年5月撮影(地理院タイル)</a>",
+    "url": "http://cyberjapandata.gsi.go.jp/xyz/{id}/{z}/{x}/{y}.jpg",
+    "title": "2012-10"
+  }, {
+    "type": "Layer",
+    "id": "toho4",
+    "attribution": "<a href='http://maps.gsi.go.jp/development/ichiran.html#toho4'>東日本大震災被災地震災直後オルソ画像 2013年9月～2013年12月撮影(地理院タイル)</a>",
+    "url": "http://cyberjapandata.gsi.go.jp/xyz/{id}/{z}/{x}/{y}.jpg",
+    "title": "2013-09"
+  }]
+}

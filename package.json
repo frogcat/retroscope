@@ -1,0 +1,19 @@
+{
+  "name": "retroscope",
+  "version": "1.0.0",
+  "description": "Leaflet multiple tile layer with spotlight effect",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/frogcat/retroscope.git"
+  },
+  "author": "frogcat",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/frogcat/retroscope/issues"
+  },
+  "homepage": "https://github.com/frogcat/retroscope#readme"
+}
