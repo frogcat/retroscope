@@ -1,4 +1,5 @@
-$(function() {
+$.getJSON("layers.json").then(function(json) {
+
   var tmpl = "http://cyberjapandata.gsi.go.jp/xyz/{id}/{z}/{x}/{y}.{ext}";
 
   var MyAnnoLayer = L.LayerGroup.extend({
@@ -41,20 +42,22 @@ $(function() {
       if (this._loading[url])
         return;
       this._loading[url] = true;
-
       var that = this;
       $.getJSON(url).then(function(json) {
         json.features.forEach(function(f) {
-          if (f.properties.annoCtg.indexOf("町字") == -1)
-            return;
-          that.addLayer(L.marker(L.GeoJSON.coordsToLatLng(f.geometry.coordinates), {
-            icon: L.divIcon({
-              className: "geojson-anno",
-              html: f.properties.knj
-            })
-          }));
+          that._each(f);
         });
       });
+    },
+    _each: function(feature) {
+      if (feature.properties.annoCtg.indexOf("町字") == -1)
+        return;
+      this.addLayer(L.marker(L.GeoJSON.coordsToLatLng(feature.geometry.coordinates), {
+        icon: L.divIcon({
+          className: "geojson-anno",
+          html: feature.properties.knj
+        })
+      }));
     }
   });
 
@@ -66,7 +69,6 @@ $(function() {
   });
   map.zoomControl.setPosition("bottomright");
   L.hash(map);
-
 
   L.control.layers({
     "オルソ画像": L.tileLayer(tmpl, {
@@ -83,27 +85,17 @@ $(function() {
     "注記": new MyAnnoLayer().addTo(map)
   }).addTo(map);
 
+  json.layers.forEach(function(a) {
+    var li = $("<li/>").attr("id", a.id).text(a.title);
+    $("#layers").append(li);
+    li.data("layer", L.tileOverlay.mask(a.url, a));
+  });
 
-  map.on("mousemove", function(event) {
+  map.on(L.Browser.touch ? "click" : "mousemove", function(event) {
     var layer = $("li.focus").data("layer");
     if (layer)
       layer.setCenter(event.containerPoint);
-  });
-
-  $("#layers").on("click", "li", function() {
-    if ($(this).is(".focus"))
-      return;
-    $(".focus").each(function() {
-      map.removeLayer($(this).data("layer"));
-      $(this).removeClass("focus");
-    });
-    $(this).addClass("focus");
-    var layer = $(this).data("layer");
-    map.addLayer(layer);
-    layer._update();
-  });
-
-  map.on("moveend", function() {
+  }).on("moveend viewreset zoomend", function() {
     var coords = map.project(map.getCenter()).divideBy(256).floor();
     coords.z = map.getZoom();
     coords.id = "cocotile";
@@ -119,13 +111,17 @@ $(function() {
     });
   });
 
-  $.getJSON("layers.json").then(function(json) {
-    json.layers.forEach(function(a) {
-      var li = $("<li/>").attr("id", a.id).text(a.title);
-      $("#layers").append(li);
-      li.data("layer", L.tileOverlay.mask(a.url, a));
+  $("#layers li").on("click", function() {
+    if ($(this).is(".focus"))
+      return;
+    $(".focus").each(function() {
+      map.removeLayer($(this).data("layer"));
+      $(this).removeClass("focus");
     });
-    $("#layers li").first().click();
-  });
+    $(this).addClass("focus");
+    var layer = $(this).data("layer");
+    map.addLayer(layer);
+    layer._update();
+  }).first().click();
 
 });
