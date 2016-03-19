@@ -89,9 +89,9 @@ $.getJSON("layers.json").then(function(json) {
     var li = $("<li/>").attr("id", a.id).text(a.title);
     $("#layers").append(li);
     if(L.Browser.touch) {
-			a.maskWidth = 256;
-			a.maskHeight = 256;
-		}
+      a.maskWidth = 256;
+      a.maskHeight = 256;
+    }
     li.data("layer", L.tileOverlay.mask(a.url, a));
   });
 
