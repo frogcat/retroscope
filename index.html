@@ -23,21 +23,37 @@
         template: "http://mapwarper.net/maps/tile/{$1}/{z}/{x}/{y}.png",
         attribution: "<a href='http://mapwarper.net/maps/{$1}'>Map Warper</a>"
       },
+      nypl: {
+        template: "http://maps.nypl.org/warper/maps/tile/{$1}/{z}/{x}/{y}.png",
+        attribution: "<a href='http://maps.nypl.org/warper/maps/{$1}'>NYPL Map Warper</a>"
+      },
       osm: {
         template: "http://{s}.tile.osm.org/{z}/{x}/{y}.png",
         attribution: "&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors"
       },
       habs: {
         template: "http://www.finds.jp/ws/tmc/1.0.0/Kanto_Rapid-900913-L/{z}/{x}/{y}.png",
-        attribution: "<a href='http://habs.dc.affrc.go.jp/'>歴史的農業環境閲覧システム(NIAES)</a>"
+        attribution: "<a href='http://habs.dc.affrc.go.jp/'>歴史的農業環境閲覧システム(NIAES)</a>",
+        minZoom: 1,
+        maxNativeZoom: 17,
+        hash: "15/35.6707/139.7852"
       },
       nls: {
         template: "http://nls-0.tileserver.com/nls/{z}/{x}/{y}.jpg",
-        attribution: "Historical maps from 1919-47  <a href='http://geo.nls.uk/maps/api/'>NLS Maps API</a>"
+        attribution: "Historical maps from 1919-47  <a href='http://geo.nls.uk/maps/api/'>NLS Maps API</a>",
+        hash: "4/55.37329/-3.001326",
+        minZoom: 1,
+        maxNativeZoom: 17
+      },
+      kjm: {
+        template: "https://sv53.wadax.ne.jp/~ktgis-net/kjmapw/kjtilemap/{$1}/{$2}/{z}/{x}/{y}.png",
+        attribution: "<a href='http://ktgis.net/kjmapw/'>今昔マップ on the web</a>",
+        tms: true
       }
     };
 
     var layers = [];
+    var hash = null;
     if (location.search.match(/^\?(.+)&(.+)$/)) {
       [RegExp.$1, RegExp.$2].forEach(function(a) {
         var b = a.split("/");
@@ -47,10 +63,13 @@
           var option = {};
           for (var key in c) {
             var d = c[key];
-            for (var i = 1; i < b.length; i++)
-              d = d.replace("{$" + i + "}", b[i]);
+            if (d.replace)
+              for (var i = 1; i < b.length; i++)
+                d = d.replace("{$" + i + "}", b[i]);
             if (key === "template")
               template = d;
+            else if (key === "hash")
+              hash = d;
             else
               option[key] = d;
           }
@@ -59,6 +78,8 @@
         }
       });
     }
+    if (location.hash === "" && hash)
+      location.hash = "#" + hash;
 
     if (layers.length != 2)
       location.href = "?gsi/ort/jpg&habs" + location.hash;
