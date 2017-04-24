@@ -5,10 +5,10 @@
   <meta charset="UTF-8">
   <title>Retroscope</title>
   <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-hash@0.2.1/leaflet-hash.js"></script>
-  <script src="//frogcat.github.io/leaflet-tileoverlay-mask/leaflet-tileoverlay-mask.js"></script>
+  <script src="https://frogcat.github.io/leaflet-tilelayer-mask/leaflet-tilelayer-mask.js"></script>
 </head>
 
 <body>
@@ -74,7 +74,7 @@
               option[key] = d;
           }
           if (template)
-            layers.push(layers.length == 0 ? L.tileLayer(template, option) : L.tileOverlay(template, option));
+            layers.push(layers.length == 0 ? L.tileLayer(template, option) : L.tileLayer.mask(template, option));
         }
       });
     }
@@ -84,17 +84,15 @@
     if (layers.length != 2)
       location.href = "?gsi/ort/jpg&habs" + location.hash;
 
-    var mask = L.svg.mask();
     var map = L.map("map", L.extend({
       zoom: 15,
       center: [35.6707, 139.7852],
-      layers: layers,
-      renderer: mask,
+      layers: layers
     }, L.Hash.parseHash(location.hash)));
     map.attributionControl.addAttribution("<a href='https://github.com/frogcat/retroscope'>fork me on GitHub</a>");
     L.hash(map);
     map.on("mousemove", function(event) {
-      mask.setCenter(event.containerPoint);
+      layers[1].setCenter(event.containerPoint);
     });
   </script>
 </body>
