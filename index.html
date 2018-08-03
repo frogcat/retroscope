@@ -50,7 +50,7 @@
         }
       },
       nls: {
-        urlTemplate: "http://nls-0.tileserver.com/nls/{z}/{x}/{y}.jpg",
+        urlTemplate: "https://nls-1.tileserver.com/nls/{z}/{x}/{y}.jpg",
         options: {
           attribution: "Historical maps from 1919-47  <a href='http://geo.nls.uk/maps/api/'>NLS Maps API</a>",
           minZoom: 1,
@@ -69,6 +69,12 @@
         options: {
           attribution: "<a href='https://hgis.pref.miyazaki.lg.jp/hinata/'>ひなたGIS</a>",
           tms: true
+        }
+      },
+      bosai: {
+        urlTemplate: "http://maptile01.bosai.go.jp/{$1}/xyz/{z}/{x}/{y}.png",
+        options: {
+          attribution: "<a href='http://ecom-plat.jp/suigai-chikei/index.php'>水害地形分類図デジタルアーカイブ</a>"
         }
       }
     };
