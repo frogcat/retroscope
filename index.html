@@ -5,8 +5,8 @@
   <meta charset="UTF-8">
   <title>Retroscope</title>
   <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-hash@0.2.1/leaflet-hash.js"></script>
   <script src="https://frogcat.github.io/leaflet-tilelayer-mask/leaflet-tilelayer-mask.js"></script>
   <script>
@@ -42,11 +42,12 @@
         }
       },
       habs: {
-        urlTemplate: "http://www.finds.jp/ws/tmc/1.0.0/Kanto_Rapid-900913-L/{z}/{x}/{y}.png",
+        urlTemplate: "https://habs.dc.affrc.go.jp/rapid16/{z}/{x}/{y}.png",
         options: {
           attribution: "<a href='http://habs.dc.affrc.go.jp/'>歴史的農業環境閲覧システム(NIAES)</a>",
           minZoom: 1,
-          maxNativeZoom: 17
+          maxNativeZoom: 17,
+          tms: true
         }
       },
       nls: {
